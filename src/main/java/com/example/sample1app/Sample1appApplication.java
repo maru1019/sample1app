@@ -3,29 +3,21 @@ package com.example.sample1app;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.Banner.Mode;
-import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @SpringBootApplication
-public class Sample1appApplication implements ApplicationRunner {
+@RestController
+public class Sample1appApplication {
 
 	public static void main(String[] args) {
-		SpringApplication app = new SpringApplication(Sample1appApplication.class);
-		app.setBannerMode(Mode.OFF);
-		app.setHeadless(false);
-		app.run(args);
+		SpringApplication.run(Sample1appApplication.class, args);
 	}
 
-	@Override
-	public void run(ApplicationArguments args) {
-		JFrame frame = new JFrame("Spring Boot Swing App");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(300,200);
-		frame.add(new JLabel("Spring Boot Application."));
-		frame.setVisible(true);
+	@RequestMapping("/")
+	public String index() {
+		return "Hello, Spring Boot 3!!!";
 	}
 }
