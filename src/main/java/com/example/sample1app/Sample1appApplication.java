@@ -1,31 +1,37 @@
 package com.example.sample1app;
 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.Banner.Mode;
-import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
-public class Sample1appApplication implements ApplicationRunner {
+@RestController
+public class Sample1appApplication {
 
 	public static void main(String[] args) {
-		SpringApplication app = new SpringApplication(Sample1appApplication.class);
-		app.setBannerMode(Mode.OFF);
-		app.setHeadless(false);
-		app.run(args);
+		SpringApplication.run(Sample1appApplication.class, args);
 	}
 
-	@Override
-	public void run(ApplicationArguments args) {
-		JFrame frame = new JFrame("Spring Boot Swing App");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(300,200);
-		frame.add(new JLabel("Spring Boot Application."));
-		frame.setVisible(true);
+	@RequestMapping("/")
+	public String index(
+			HttpServletRequest request,
+			HttpServletResponse response) {
+		response.setContentType(MediaType.TEXT_HTML_VALUE);
+		String content = """
+			<html>
+				<head>
+				<title>Sample App</title>
+				</head>
+				<body>
+				<h1>Sample App</h1>
+				<p>This is sample app page!</p>
+			</html>
+			""";
+		return content;
 	}
 }
