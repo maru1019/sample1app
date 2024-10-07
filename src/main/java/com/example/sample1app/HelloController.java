@@ -11,7 +11,6 @@ public class HelloController {
   public ModelAndView index(@PathVariable int month, ModelAndView mav) {
     mav.setViewName("index");
     mav.addObject("msg", month + "月は？");
-    String[] data = new String[] {"One","Two","Three"};
     mav.addObject("month", month);
     return mav;
   }
