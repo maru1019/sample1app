@@ -7,14 +7,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class HelloController {
-  private boolean flag = false;
-
   @RequestMapping("/")
   public ModelAndView index(ModelAndView mav) {
-    flag = !flag;
     mav.setViewName("index");
-    mav.addObject("flag", flag);
-    mav.addObject("msg", "サンプルのメッセージです");
+    mav.addObject("msg", "データを表示します。");
+    String[] data = new String[] {"One","Two","Three"};
+    mav.addObject("data", data);
     return mav;
   }
 }
