@@ -7,16 +7,9 @@
 </head>
 <body class="container">
   <h1 class="display-4 mb-4">Hello page</h1>
-  <ul>
-    {{#data}}
-    <li>{{.}}</li>
-    {{/data}}
-  </ul>
-  <hr>
-  <ul>
-    {{#data}}
-    <li><b>{{name}}</b>[{{age}}]</li>
-    {{/data}}
-  </ul>
+  {{#fn}}
+  <h6>{{title}}</h6>
+  <p>{{msg}}</p>
+  {{/fn}}
 </body>
 </html>
