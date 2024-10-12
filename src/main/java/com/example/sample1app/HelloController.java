@@ -8,10 +8,9 @@ import org.springframework.web.servlet.ModelAndView;
 public class HelloController {
   @RequestMapping("/")
   public ModelAndView index(ModelAndView mav) {
-    String[] data = {"Windows", "MocOS", "Linux", "ChromeOS"};
     mav.setViewName("index");
     mav.addObject("title","Groovy templates");
-    mav.addObject("msg", "This is include content sample ");
+    mav.addObject("msg", "レイアウト機能を使ったサンプルです。");
     return mav;
   }
 }
