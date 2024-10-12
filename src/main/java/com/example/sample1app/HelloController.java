@@ -3,15 +3,14 @@ package com.example.sample1app;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class HelloController {
-  @RequestMapping("/{month}")
-  public ModelAndView index(@PathVariable int month, ModelAndView mav) {
+  @RequestMapping("/")
+  public ModelAndView index(ModelAndView mav) {
     mav.setViewName("index");
-    mav.addObject("msg", month + "月は？");
-    mav.addObject("month", month);
+    mav.addObject("title","Groovy templates");
+    mav.addObject("msg", "レイアウト機能を使ったサンプルです。");
     return mav;
   }
 }
