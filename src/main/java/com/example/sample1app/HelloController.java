@@ -11,15 +11,35 @@ import org.springframework.web.servlet.ModelAndView;
 import com.example.sample1app.entity.Person;
 import com.example.sample1app.repository.PersonRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-
+import jakarta.annotation.PostConstruct;
 
 @Controller
 public class HelloController {
 
   @Autowired
   PersonRepository repository;
+
+  @PostConstruct
+  public void init() {
+    // 1つ目のダミーデータ作成
+    Person p1 = new Person();
+    p1.setName("taro");
+    p1.setAge(39);
+    p1.setMail("taro@yamada");
+    repository.saveAndFlush(p1);
+    // 2つ目のダミーデータ作成
+    Person p2 = new Person();
+    p2.setName("hanako");
+    p2.setAge(28);
+    p2.setMail("hanako@flower");
+    repository.saveAndFlush(p2);
+    // 3つ目のダミーデータ作成
+    Person p3 = new Person();
+    p3.setName("sachiko");
+    p3.setAge(17);
+    p3.setMail("sachiko@happy");
+    repository.saveAndFlush(p3);
+  }
 
   @RequestMapping("/")
   public ModelAndView index(@ModelAttribute("formModel") Person person, ModelAndView mav) {
@@ -38,3 +58,5 @@ public class HelloController {
     return new ModelAndView("redirect:/");
   }
 }
+
+

@@ -9,4 +9,3 @@ import com.example.sample1app.entity.Person;
 public interface PersonRepository extends JpaRepository<Person, Long> {
   
 }
-
