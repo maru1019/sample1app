@@ -24,16 +24,16 @@ public class Person {
   private long id;
 
   @Column(length = 50, nullable = false)
-  @NotBlank
+  @NotBlank(message="名前は書かないとダメ！")
   private String name;
 
   @Column(length = 200, nullable = true)
-  @Email
+  @Email(message="メールアドレス教えて！")
   private String mail;
 
   @Column(nullable = true)
-  @Min(0)
-  @Max(200)
+  @Min(value=0, message="いやいや、マイナスの歳ってないでしょ？")
+  @Max(value=200, message="200歳以上って魔女ですか？")
   private Integer age;
 
   @Column(nullable = true)
