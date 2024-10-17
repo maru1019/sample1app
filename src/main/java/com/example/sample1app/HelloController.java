@@ -16,6 +16,9 @@ import com.example.sample1app.repository.PersonRepository;
 import jakarta.transaction.Transactional;
 import jakarta.annotation.PostConstruct;
 
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+
 @Controller
 public class HelloController {
 
@@ -56,9 +59,21 @@ public class HelloController {
 
   @RequestMapping(value = "/", method = RequestMethod.POST)
   @Transactional
-  public ModelAndView form(@ModelAttribute("formModel") Person person, ModelAndView mav) {
-    repository.saveAndFlush(person);
-    return new ModelAndView("redirect:/");
+  public ModelAndView form(@ModelAttribute("formModel") @Validated Person person, BindingResult result, ModelAndView mav) {
+    ModelAndView res = null;
+    System.out.println(result.getFieldErrors());
+    if (!result.hasErrors()){
+      repository.saveAndFlush(person);
+      res = new ModelAndView("redirect:/");
+    } else {
+      mav.setViewName("index");
+      mav.addObject("title","Hello page");
+      mav.addObject("msg","soory, error is occurres...");
+      Iterable<Person> list = repository.findAll();
+      mav.addObject("datalist",list);
+      res = mav;
+    }
+    return res;
   }
 
   @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
