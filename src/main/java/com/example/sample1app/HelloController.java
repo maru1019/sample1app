@@ -25,7 +25,7 @@ public class HelloController {
   @Autowired
   PersonRepository repository;
 
-  @PostConstruct
+  //@PostConstruct
   public void init() {
     // 1つ目のダミーデータ作成
     Person p1 = new Person();
