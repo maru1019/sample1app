@@ -23,6 +23,5 @@ public @interface Phone {
 
   Class<? extends Payload>[] payload() default {};
 
-  boolean onlyNumber() default false;
   
 }

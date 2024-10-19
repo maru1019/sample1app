@@ -4,20 +4,24 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.sample1app.entity.Person;
 import com.example.sample1app.repository.PersonRepository;
-import jakarta.transaction.Transactional;
-import jakarta.annotation.PostConstruct;
 
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
+import jakarta.annotation.PostConstruct;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
+
 
 @Controller
 public class HelloController {
@@ -25,7 +29,10 @@ public class HelloController {
   @Autowired
   PersonRepository repository;
 
-  //@PostConstruct
+  @Autowired
+  PersonDAOPersonImpl dao;
+
+  @PostConstruct
   public void init() {
     // 1つ目のダミーデータ作成
     Person p1 = new Person();
@@ -45,6 +52,15 @@ public class HelloController {
     p3.setAge(17);
     p3.setMail("sachiko@happy");
     repository.saveAndFlush(p3);
+  }
+
+  @RequestMapping(value = "/find", method = RequestMethod.GET)
+  public ModelAndView index(ModelAndView mav) {
+    mav.setViewName("find");
+    mav.addObject("msg","Personのサンプルです。");
+    Iterable<Person> list = dao.getAll();
+    mav.addObject("data",list);
+    return mav;
   }
 
   @RequestMapping("/")
