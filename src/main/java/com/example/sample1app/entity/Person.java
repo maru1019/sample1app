@@ -21,7 +21,8 @@ import com.example.sample1app.Phone;
 @Entity
 @Table(name="people")
 @NamedQueries(
-  @NamedQuery( name="findWithName", query="from Person where name like :fname "))
+  @NamedQuery( name="findWithName", query = "from Person where name like :fname "))
+  @NamedQuery( name="findByAge", query = "from Person where age >= :min and age < :max")
 public class Person {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
