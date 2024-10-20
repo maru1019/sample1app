@@ -42,11 +42,12 @@ public class PersonDAOPersonImpl implements PersonDAO<Person> {
     return (List<Person>)entityManager.createQuery("from Person where name = '" + name + "'").getResultList();
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public List<Person> find(String fstr){
     List<Person> list = null;
-    String qstr = "from Person where id = :fstr or name like :fname or mail like :fmail";
-    Long fid = OL;
+    String qstr = "from Person where id = :fid or name like :fname or mail like :fmail";
+    Long fid = 0L;
     try {
       fid = Long.parseLong(fstr);
     } catch (NumberFormatException e) {
