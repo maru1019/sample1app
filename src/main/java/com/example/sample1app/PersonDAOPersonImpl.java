@@ -41,4 +41,23 @@ public class PersonDAOPersonImpl implements PersonDAO<Person> {
   public List<Person> findByName(String name) {
     return (List<Person>)entityManager.createQuery("from Person where name = '" + name + "'").getResultList();
   }
+
+  @Override
+  public List<Person> find(String fstr){
+    List<Person> list = null;
+    String qstr = "from Person where id = :fstr or name like :fname or mail like :fmail";
+    Long fid = OL;
+    try {
+      fid = Long.parseLong(fstr);
+    } catch (NumberFormatException e) {
+      e.printStackTrace();
+    }
+    Query query = entityManager.createQuery(qstr)
+    .setParameter("fid", fid)
+    .setParameter("fname","%" + fstr + "%")
+    .setParameter("fmail", fstr + "%@%");
+    list = query.getResultList();
+    return list;
+  }
 }
+
