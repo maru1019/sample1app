@@ -30,7 +30,7 @@ public class PersonDAOPersonImpl implements PersonDAO<Person> {
     CriteriaBuilder builder = entityManager.getCriteriaBuilder();
     CriteriaQuery<Person> query = builder.createQuery(Person.class);
     Root<Person> root = query.from(Person.class);
-    query.select(root);
+    query.select(root).orderBy(builder.asc(root.get("name")));
     list = (List<Person>)entityManager.createQuery(query).getResultList();
     return list; 
   }
@@ -38,7 +38,6 @@ public class PersonDAOPersonImpl implements PersonDAO<Person> {
   @Override
   public Person findById(long id) {
     return (Person)entityManager.createQuery("from Person where id =" + id).getSingleResult();
-
   }
   
   @SuppressWarnings("unchecked")
@@ -47,13 +46,14 @@ public class PersonDAOPersonImpl implements PersonDAO<Person> {
     return (List<Person>)entityManager.createQuery("from Person where name = '" + name + "'").getResultList();
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   public List<Person> find(String fstr){
+    CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+    CriteriaQuery<Person> query = builder.createQuery(Person.class);
+    Root<Person> root = query.from(Person.class);
+    query.select(root).where(builder.equal(root.get("name"), fstr));
     List<Person> list = null;
-    Query query = entityManager.createNamedQuery("findWithName")
-    .setParameter("fname","%" + fstr + "%");
-    list = query.getResultList();
+    list = (List<Person>) entityManager.createQuery(query).getResultList();
     return list;
   }
 
