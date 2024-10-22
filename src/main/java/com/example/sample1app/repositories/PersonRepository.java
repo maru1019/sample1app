@@ -1,4 +1,4 @@
-package com.example.sample1app.repository;
+package com.example.sample1app.repositories;
 
 import java.util.List;
 import java.util.Optional;
@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import com.example.sample1app.entity.Person;
+import com.example.sample1app.entities.Person;
 
 @Repository
 public interface PersonRepository extends JpaRepository<Person, Long> {

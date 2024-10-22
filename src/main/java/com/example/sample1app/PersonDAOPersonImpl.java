@@ -2,8 +2,6 @@ package com.example.sample1app;
 
 import java.util.List;
 
-import com.example.sample1app.entity.Person; // Personクラスのインポート
-
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
@@ -12,6 +10,8 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 
 import org.springframework.stereotype.Repository;
+
+import com.example.sample1app.entities.Person;
 
 @Repository
 public class PersonDAOPersonImpl implements PersonDAO<Person> {

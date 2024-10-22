@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.example.sample1app.entity.Person;
-import com.example.sample1app.repository.PersonRepository;
+import com.example.sample1app.entities.Person;
+import com.example.sample1app.repositories.PersonRepository;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
