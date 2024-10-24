@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.example.sample1app.entities.Post;
 import com.example.sample1app.entities.Person;
 import com.example.sample1app.repositories.PersonRepository;
 
@@ -31,6 +32,12 @@ public class HelloController {
 
   @Autowired
   PersonDAOPersonImpl dao;
+
+  @Autowired
+  Post post;
+
+  @Autowired
+  SampleComponent component;
 
   @PostConstruct
   public void init() {
@@ -146,6 +153,13 @@ public class HelloController {
     Iterable<Person> list = dao.getPage(page,num);
     mav.addObject("data", list);
     return mav;
+  }
 
+  @RequestMapping("/bean")
+  public ModelAndView bean(ModelAndView mav) {
+    mav.setViewName("bean");
+    mav.addObject("title","Bean sample");
+    mav.addObject("msg", component.message());
+    return mav;
   }
 }
