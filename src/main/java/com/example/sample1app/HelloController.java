@@ -164,7 +164,18 @@ public class HelloController {
     mav.setViewName("bean");
     mav.addObject("title", "Bean sample");
     mav.addObject("msg", component.message());
-    mav.addObject("data", new Post[]{service.getPost()});
+    mav.addObject("data", service.getAllPosts());
+    return mav;
+  }
+
+  @RequestMapping(value="/bean", method = RequestMethod.POST)
+  public ModelAndView bean(HttpServletRequest request, ModelAndView mav) {
+    String param = request.getParameter("find_str");
+    mav.setViewName("bean");
+    mav.addObject("title", "Bean sample");
+    mav.addObject("msg", "get id = " + param);
+    Post post = service.getPost(Integer.parseInt(param));
+    mav.addObject("data", new Post[]{post});
     return mav;
   }
 }
