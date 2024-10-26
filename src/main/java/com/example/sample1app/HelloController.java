@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.sample1app.entities.Post;
@@ -38,6 +39,9 @@ public class HelloController {
 
   @Autowired
   SampleComponent component;
+
+  @Autowired
+  SampleService service;
 
   @PostConstruct
   public void init() {
@@ -158,8 +162,9 @@ public class HelloController {
   @RequestMapping("/bean")
   public ModelAndView bean(ModelAndView mav) {
     mav.setViewName("bean");
-    mav.addObject("title","Bean sample");
+    mav.addObject("title", "Bean sample");
     mav.addObject("msg", component.message());
+    mav.addObject("data", new Post[]{service.getPost()});
     return mav;
   }
 }
