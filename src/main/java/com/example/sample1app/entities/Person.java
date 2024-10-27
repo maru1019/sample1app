@@ -1,4 +1,8 @@
-package com.example.sample1app.entity;
+package com.example.sample1app.entities;
+
+import java.util.List;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.OneToMany;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -6,6 +10,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.NamedQueries;
+
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Max;
@@ -17,6 +24,9 @@ import com.example.sample1app.Phone;
 
 @Entity
 @Table(name="people")
+@NamedQueries(
+  @NamedQuery( name="findWithName", query = "from Person where name like :fname "))
+  @NamedQuery( name="findByAge", query = "from Person where age >= :min and age < :max")
 public class Person {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -38,8 +48,12 @@ public class Person {
   private Integer age;
 
   @Column(nullable = true)
-  @Phone(onlyNumber=true)
+  @Phone
   private String memo;
+
+  @OneToMany(mappedBy="Person")
+  @Column(nullable = true)
+  private List<Message> messages;
 
   public long getId() {
     return id;
@@ -79,5 +93,13 @@ public class Person {
 
   public void setMemo(String memo) {
     this.memo = memo;
+  }
+
+  public List<Message> getMessages() {
+    return messages;
+  }
+
+  public void setMessages(List<Message> messages) {
+    this.messages = messages;
   }
 }

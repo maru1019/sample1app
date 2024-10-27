@@ -4,20 +4,26 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
-
-import com.example.sample1app.entity.Person;
-import com.example.sample1app.repository.PersonRepository;
-import jakarta.transaction.Transactional;
-import jakarta.annotation.PostConstruct;
-
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import org.springframework.web.servlet.ModelAndView;
+
+import com.example.sample1app.entities.Post;
+import com.example.sample1app.entities.Person;
+import com.example.sample1app.repositories.PersonRepository;
+
+import jakarta.annotation.PostConstruct;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
+
 
 @Controller
 public class HelloController {
@@ -25,7 +31,19 @@ public class HelloController {
   @Autowired
   PersonRepository repository;
 
-  //@PostConstruct
+  @Autowired
+  PersonDAOPersonImpl dao;
+
+  @Autowired
+  Post post;
+
+  @Autowired
+  SampleComponent component;
+
+  @Autowired
+  SampleService service;
+
+  @PostConstruct
   public void init() {
     // 1つ目のダミーデータ作成
     Person p1 = new Person();
@@ -52,7 +70,7 @@ public class HelloController {
     mav.setViewName("index");
     mav.addObject("title","Hello page");
     mav.addObject("msg", "this is JPA sample data.");
-    List<Person> list = repository.findAll();
+    List<Person> list = dao.getAll();
     mav.addObject("data",list);
     return mav;
   }
@@ -109,4 +127,55 @@ public class HelloController {
     return new ModelAndView("redirect:/");
   }
 
+  @RequestMapping(value = "/find", method = RequestMethod.GET)
+  public ModelAndView index(ModelAndView mav) {
+    mav.setViewName("find");
+    mav.addObject("msg","Personのサンプルです。");
+    Iterable<Person> list = dao.getAll();
+    mav.addObject("data",list);
+    return mav;
+  }
+
+  @RequestMapping(value = "/find", method=RequestMethod.POST)
+  public ModelAndView search(HttpServletRequest request, ModelAndView mav) {
+    mav.setViewName("find");
+    String param = request.getParameter("find_str");
+    if (param == ""){
+      mav = new ModelAndView("redirect:find");
+    } else {
+      List<Person> list = dao.find(param);
+      mav.addObject("data", list);
+    }
+    return mav;
+  }
+
+  @RequestMapping(value = "/page/{page}", method = RequestMethod.GET)
+  public ModelAndView index(ModelAndView mav, @PathVariable int page) {
+    mav.setViewName("find");
+    mav.addObject("msg","Personのサンプルです。");
+    int num = 2;
+    Iterable<Person> list = dao.getPage(page,num);
+    mav.addObject("data", list);
+    return mav;
+  }
+
+  @RequestMapping("/bean")
+  public ModelAndView bean(ModelAndView mav) {
+    mav.setViewName("bean");
+    mav.addObject("title", "Bean sample");
+    mav.addObject("msg", component.message());
+    mav.addObject("data", service.getLocalPosts());
+    return mav;
+  }
+
+  @RequestMapping(value="/bean", method = RequestMethod.POST)
+  public ModelAndView bean(HttpServletRequest request, ModelAndView mav) {
+    String param = request.getParameter("find_str");
+    mav.setViewName("bean");
+    mav.addObject("title", "Bean sample");
+    mav.addObject("msg", "get id = " + param);
+    Post post = service.getAndSavePost(Integer.parseInt(param));
+    mav.addObject("data", new Post[]{post});
+    return mav;
+  }
 }
